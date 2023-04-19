@@ -18,6 +18,7 @@ namespace App\Controller;
 
         // giving acess frp, page to page in controller instead of overall.
         $this->Authentication->allowUnauthenticated(['login', 'add', 'logout']);
+
     }
 
     /**

@@ -42,6 +42,7 @@
                         ?>
                     </fieldset>
                     <?= $this->Form->button(__('Login')) ?>
+                    
                     <?= $this->Form->end() ?>
                     <hr style="margin: 2rem 0 3rem 0">
                     <?= $this->Html->link(__('Go to Homepage'), '/', ['class' => 'button button-clear']) ?>

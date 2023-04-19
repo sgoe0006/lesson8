@@ -35,13 +35,20 @@ use Cake\Routing\Middleware\RoutingMiddleware;
 use Cake\Routing\Router;
 use Psr\Http\Message\ServerRequestInterface;
 
+use Authorization\AuthorizationService;
+use Authorization\AuthorizationServiceInterface;
+use Authorization\AuthorizationServiceProviderInterface;
+use Authorization\Middleware\AuthorizationMiddleware;
+use Authorization\Policy\OrmResolver;
+
+
 /**
  * Application setup class.
  *
  * This defines the bootstrapping logic and middleware layers you
  * want to use in your application.
  */
-class Application extends BaseApplication 
+class Application extends BaseApplication
     implements AuthenticationServiceProviderInterface
 {
     /**
@@ -71,6 +78,7 @@ class Application extends BaseApplication
             $this->addPlugin('DebugKit');
         }
        $this->addPlugin('Authentication');
+    //    $this->addPlugin('Authorization');
         //$this->addPlugin('Migrations');
 
 
@@ -122,6 +130,7 @@ class Application extends BaseApplication
 
             // Add Authentication support by plugin
            ->add(new AuthenticationMiddleware($this));
+           //->add(new AuthorizationMiddleware($this));
 
 
         return $middlewareQueue;
@@ -135,14 +144,20 @@ class Application extends BaseApplication
                 'plugin' => null,
                 'prefix' => null
             ]),
-            'unauthenticatedRedirect' => Router::url([
-                'controller' => 'Admins',
-                'action' => 'login',
-                'plugin' => null,
-                'prefix' => null
-            ]),
+
             'queryParam' => 'redirect',
         ]);
+        // $authenticationService = new AuthenticationService([
+        //     'unauthenticatedRedirect' => Router::url([
+        //         'controller' => 'Admins',
+        //         'action' => 'login',
+        //         'plugin' => null,
+        //         'prefix' => null
+        //     ]),
+
+        //     'queryParam' => 'redirect'
+        
+        
 
         $authentication_fields = [
             IdentifierInterface::CREDENTIAL_USERNAME => 'email',
@@ -162,19 +177,19 @@ class Application extends BaseApplication
                 'action' => 'login',
                 'plugin' => null,
                 'prefix' => null
-            ]),           
-            'fields' => $authentication_fields,
-            'loginUrl' => Router::url([
-                'controller' => 'Admins',
-                'action' => 'login',
-                'plugin' => null,
-                'prefix' => null
-            ]),
-
-        ]);
+            ])]);
+            
 
         return $authenticationService;
     }
+
+//     public function getAuthorizationService(ServerRequestInterface $request): AuthorizationServiceInterface
+// {
+//     $resolver = new OrmResolver();
+
+//     return new AuthorizationService($resolver);
+// }
+
 
     /**
      * Register application container services.

@@ -21,6 +21,8 @@ class UsersController extends AppController
 
         // giving acess frp, page to page in controller instead of overall.
         $this->Authentication->allowUnauthenticated(['login', 'add', 'logout']);
+        //$this->Authorization->skipAuthorization();
+
     }
 
      public function index()
